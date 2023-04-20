@@ -44,8 +44,8 @@ def send(self, data, address):
     data = data_split(data.encode('ascii'))
     index = 0
 
-    for i, data_portion in enumerate(data):
-        try_sendto(self, data_portion, address, index)
+    for batch in data:
+        try_sendto(self, batch, address, index)
         index = (index + 1) % 2
 
     try_sendto(self, b'\0', address, index)

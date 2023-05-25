@@ -10,8 +10,15 @@ def chunk(arr, arr_size):
     arr = iter(arr)
     return iter(lambda: tuple(islice(arr, arr_size)), ())
 
+def crc_check(bitchunk, poly, size):
+    res = crc(bitchunk, poly, size)
+    print("chk:", res)
+    return True if int.from_bytes(res, "big") == 0 else False
+
+
 
 def crc(bitchunk, poly, size):
+    print(bitchunk)
     bin_num = int.from_bytes(bitchunk, "big")
     res = bin_num << size
 
@@ -53,6 +60,12 @@ def crc_encrypt(text):
 print(hex(int.from_bytes(crc_16_ccitt(b'\x01\x02'), "big")))
 print(hex(int.from_bytes(crc_8(b'\xC2'), "big")))
 crc_encrypt('Hello World!')
-print(hex(int.from_bytes(crc_16_ccitt(str.encode('123456789', encoding="ASCII")), "big")))
+
+byte_123 = str.encode('123456789', encoding="ASCII")
+
+print(hex(int.from_bytes(crc_16_ccitt(byte_123), "big")))
 crc_encrypt('Hi')
 crc_encrypt('1')
+
+
+print(crc_check(byte_123 + crc_16_ccitt(byte_123), CRC_16_CCITT, 16))

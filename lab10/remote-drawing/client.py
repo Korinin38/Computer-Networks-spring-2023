@@ -13,6 +13,8 @@ def paint(event):
     x2, y2 = x1 + 2, y1 + 2
     c.create_oval(x1, y1, x2, y2, fill=color, outline=color)
 
+    if event.x < 0 or event.y < 0:
+        return
     pack = (event.x.to_bytes(2, 'big') + event.y.to_bytes(2, 'big'))
     client.send(pack)
 
